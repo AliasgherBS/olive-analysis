@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olive Disease Detection System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .login-header img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .main-container {
+            display: none;
+            margin: 20px;
+        }
+        
+        .upload-container {
+            margin: 20px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .results-container {
+            display: none;
+            margin: 20px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .history-container {
+            display: none;
+            margin: 20px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .navbar {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .guidelines-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .guidelines-container h4 {
+            color: #28a745;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        
+        .guidelines-container ul {
+            padding-left: 20px;
+        }
+        
+        .guidelines-container li {
+            margin-bottom: 10px;
+        }
+        
+        .region-select {
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        
+        .btn-success {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        
+        .btn-success:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #28a745;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .table {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .disease-info {
+            margin-top: 20px;
+        }
+        
+        .disease-info dt {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .disease-info dd {
+            margin-bottom: 15px;
+        }
+        
+        .history-item {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .history-item:hover {
+            background-color: #f1f8e9;
+        }
+        
+        .tab-buttons {
+            margin-bottom: 20px;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: #28a745;
+        }
+        
+        .nav-pills .nav-link {
+            color: #28a745;
+        }
+        
+        .badge-optimal {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div class="login-container" id="loginSection">
+        <div class="login-header">
+            <img src="resources/background.png" alt="Olive Trees" class="img-fluid">
+            <h2 class="mb-3">Olive Disease Detection</h2>
+            <p class="text-muted">Professional system for olive farmers</p>
+        </div>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" class="form-control" id="username" value="admin">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" class="form-control" id="password" value="admin">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-container" id="mainSection">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <imgresources/ src="logo.png" alt="Logo">
+                    Olive Disease Detection
+                </a>
+                <div class="d-flex">
+                    <button class="btn btn-light me-2" onclick="showNewAnalysis()">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </button>
+                    <button class="btn btn-light me-2" onclick="loadAnalysisHistory()">
+                        <i class="fas fa-history"></i> Analysis History
+                    </button>
+                    <button class="btn btn-light" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar Guidelines -->
+                <div class="col-md-3">
+                    <div class="guidelines-container">
+                        <h4><i class="fas fa-info-circle"></i> System Guidelines</h4>
+                        <ul>
+                            <li><strong>Upload Image:</strong> Select a clear image of olive leaves or fruits to analyze.</li>
+                            <li><strong>Select Region:</strong> Choose the region where your olive grove is located for accurate weather analysis.</li>
+                            <li><strong>Analysis:</strong> The system will detect diseases in leaves and fruits and provide recommendations.</li>
+                            <li><strong>Results:</strong> View detailed results including disease distribution and health status.</li>
+                            <li><strong>Download Report:</strong> Generate a PDF report with all analysis details for your records.</li>
+                            <li><strong>History:</strong> Access your previous analyses and compare results over time.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="disease-info">
+                        <h4><i class="fas fa-bug"></i> Common Olive Diseases</h4>
+                        <dl>
+                            <dt>Olive Peacock Spot</dt>
+                            <dd>A fungal disease causing circular spots on leaves with a peacock-like appearance.</dd>
+                            
+                            <dt>Aculus Olearius</dt>
+                            <dd>Tiny mites that cause leaf curling and discoloration in olive trees.</dd>
+                            
+                            <dt>Olive Fruit Fly</dt>
+                            <dd>Insect pest that lays eggs in olives, causing fruit damage and drop.</dd>
+                            
+                            <dt>Olive Anthracnose</dt>
+                            <dd>Fungal infection causing brown spots on fruits that can lead to rot.</dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="col-md-9">
+                    <!-- New Analysis Section -->
+                    <div class="upload-container" id="uploadSection">
+                        <h3><i class="fas fa-leaf"></i> Olive Disease Analysis</h3>
+                        
+                        <!-- Region Selection -->
+                        <div class="card region-select">
+                            <div class="card-header">
+                                <i class="fas fa-map-marker-alt"></i> Select Region
+                            </div>
+                            <div class="card-body">
+                                <select class="form-select" id="regionSelect">
+                                    <!-- Regions will be loaded dynamically -->
+                                    <option value="">Loading regions...</option>
+                                </select>
+                                <div class="form-text">Select the region where your olive grove is located for accurate weather analysis.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Image -->
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-upload"></i> Upload Image
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <input type="file" class="form-control" id="imageInput" accept=".jpg,.jpeg">
+                                    <div class="form-text">Upload a clear image of olive leaves or fruits.</div>
+                                </div>
+                                <div id="imagePreviewContainer"></div>
+                                <button class="btn btn-primary" onclick="analyzeImage()" id="analyzeBtn">
+                                    <i class="fas fa-microscope"></i> Analyze Image
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p>Analyzing image...</p>
+                        </div>
+                        
+                        <!-- References Section -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <i class="fas fa-book"></i> References
+                            </div>
+                            <div class="card-body">
+                                <p>The disease detection system's recommendations and treatments are primarily based on research and products from Pakistan's agricultural sector. The system integrates information from the following sources:</p>
+                                
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://www.kissanghar.pk/products?company=Engro" target="_blank">Engro Agricultural Products</a> - 
+                                        Product recommendations for treatments and preventive measures for olive diseases.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://smeda.org/phocadownload/OTC_Documents/Agro_Food/Olive%20Commercial%20Cultivation%20Dec-2022.pdf" target="_blank">SMEDA Olive Commercial Cultivation Guide</a> - 
+                                        Guidelines for optimal growing conditions and commercial cultivation practices in Pakistan.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://www.researchgate.net/publication/379103484_Evolution_of_olive_farming_industry_and_usage_in_Pakistan_A_comprehensive_review" target="_blank">Evolution of olive farming industry in Pakistan</a> - 
+                                        Research on olive farming practices and adaptation in Pakistan's climate.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://apsjournals.apsnet.org/doi/10.1094/PDIS-09-22-2260-RE" target="_blank">Anthracnose of olive fruit research</a> - 
+                                        Scientific information on olive anthracnose and its management strategies.
+                                    </li>
+                                </ul>
+                                
+                                <p class="mt-3">The system's recommendations are tailored to the specific olive varieties and growing conditions in South Asia, particularly Pakistan, while also incorporating global best practices from traditional olive-growing regions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results Section -->
+                    <div class="results-container" id="resultsSection">
+                        <h3><i class="fas fa-chart-pie"></i> Analysis Results</h3>
+                        <div id="resultsContent"></div>
+                        <button class="btn btn-success mt-3 me-2" onclick="downloadPDF()">
+                            <i class="fas fa-file-pdf"></i> Download PDF Report
+                        </button>
+                        <button class="btn btn-primary mt-3" onclick="showNewAnalysis()">
+                            <i class="fas fa-plus"></i> New Analysis
+                        </button>
+                        
+                        <!-- References Section in Results View -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <i class="fas fa-book"></i> References
+                            </div>
+                            <div class="card-body">
+                                <p>The disease detection system's recommendations and treatments are primarily based on research and products from Pakistan's agricultural sector. The system integrates information from the following sources:</p>
+                                
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://www.kissanghar.pk/products?company=Engro" target="_blank">Engro Agricultural Products</a> - 
+                                        Product recommendations for treatments and preventive measures for olive diseases.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://smeda.org/phocadownload/OTC_Documents/Agro_Food/Olive%20Commercial%20Cultivation%20Dec-2022.pdf" target="_blank">SMEDA Olive Commercial Cultivation Guide</a> - 
+                                        Guidelines for optimal growing conditions and commercial cultivation practices in Pakistan.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://www.researchgate.net/publication/379103484_Evolution_of_olive_farming_industry_and_usage_in_Pakistan_A_comprehensive_review" target="_blank">Evolution of olive farming industry in Pakistan</a> - 
+                                        Research on olive farming practices and adaptation in Pakistan's climate.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                        <a href="https://apsjournals.apsnet.org/doi/10.1094/PDIS-09-22-2260-RE" target="_blank">Anthracnose of olive fruit research</a> - 
+                                        Scientific information on olive anthracnose and its management strategies.
+                                    </li>
+                                </ul>
+                                
+                                <p class="mt-3">The system's recommendations are tailored to the specific olive varieties and growing conditions in South Asia, particularly Pakistan, while also incorporating global best practices from traditional olive-growing regions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Analysis History Section -->
+                    <div class="history-container" id="historySection">
+                        <h3><i class="fas fa-history"></i> Analysis History</h3>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-list"></i> Previous Analyses
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date & Time</th>
+                                                <th>Region</th>
+                                                <th>Leaves</th>
+                                                <th>Fruits</th>
+                                                <th>Leaf Infection</th>
+                                                <th>Fruit Infection</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="historyTableBody">
+                                            <!-- History items will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="historyEmptyMessage" class="text-center p-4 d-none">
+                                    <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                                    <p>No previous analyses found. Start by analyzing a new image.</p>
+                                    <button class="btn btn-primary mt-2" onclick="showNewAnalysis()">
+                                        <i class="fas fa-plus"></i> New Analysis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Single Analysis View -->
+                        <div id="singleAnalysisView" class="mt-4 d-none">
+                            <div id="historySingleAnalysisContent"></div>
+                            <div class="mt-3">
+                                <button class="btn btn-success me-2" onclick="downloadHistoryPDF()">
+                                    <i class="fas fa-file-pdf"></i> Download PDF Report
+                                </button>
+                                <button class="btn btn-secondary" onclick="hideAnalysisDetail()">
+                                    <i class="fas fa-arrow-left"></i> Back to History
+                                </button>
+                            </div>
+                            
+                            <!-- References Section in History Detail View -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <i class="fas fa-book"></i> References
+                                </div>
+                                <div class="card-body">
+                                    <p>The disease detection system's recommendations and treatments are primarily based on research and products from Pakistan's agricultural sector. The system integrates information from the following sources:</p>
+                                    
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                            <a href="https://www.kissanghar.pk/products?company=Engro" target="_blank">Engro Agricultural Products</a> - 
+                                            Product recommendations for treatments and preventive measures for olive diseases.
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                            <a href="https://smeda.org/phocadownload/OTC_Documents/Agro_Food/Olive%20Commercial%20Cultivation%20Dec-2022.pdf" target="_blank">SMEDA Olive Commercial Cultivation Guide</a> - 
+                                            Guidelines for optimal growing conditions and commercial cultivation practices in Pakistan.
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                            <a href="https://www.researchgate.net/publication/379103484_Evolution_of_olive_farming_industry_and_usage_in_Pakistan_A_comprehensive_review" target="_blank">Evolution of olive farming industry in Pakistan</a> - 
+                                            Research on olive farming practices and adaptation in Pakistan's climate.
+                                        </li>
+                                        <li class="list-group-item">
+                                            <i class="fas fa-external-link-alt text-primary me-2"></i>
+                                            <a href="https://apsjournals.apsnet.org/doi/10.1094/PDIS-09-22-2260-RE" target="_blank">Anthracnose of olive fruit research</a> - 
+                                            Scientific information on olive anthracnose and its management strategies.
+                                        </li>
+                                    </ul>
+                                    
+                                    <p class="mt-3">The system's recommendations are tailored to the specific olive varieties and growing conditions in South Asia, particularly Pakistan, while also incorporating global best practices from traditional olive-growing regions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accessToken = null;
+        let uploadedFilename = null;
+        let currentResultId = null;
+        let selectedRegion = null;
+        let currentHistoryResult = null;
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `username=${username}&password=${password}`
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    accessToken = data.access_token;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('mainSection').style.display = 'block';
+                    
+                    // Reset any previous analysis
+                    resetAnalysis();
+                    
+                    // Load regions from API
+                    await loadRegions();
+                    
+                    // Show upload section
+                    showNewAnalysis();
+                } else {
+                    showAlert('Login failed. Please check your credentials.', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Login failed. Please try again.', 'danger');
+            }
+        });
+
+        // Function to load regions from API
+        async function loadRegions() {
+            try {
+                const response = await fetch('http://localhost:8000/regions', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const selectElement = document.getElementById('regionSelect');
+                    selectElement.innerHTML = '';
+                    
+                    data.regions.forEach(region => {
+                        const option = document.createElement('option');
+                        option.value = region.key;
+                        option.textContent = region.name;
+                        selectElement.appendChild(option);
+                    });
+                    
+                    // Set the initially selected region
+                    if (data.regions.length > 0) {
+                        selectedRegion = data.regions[0].key;
+                    }
+                    
+                    // Add change event listener
+                    selectElement.addEventListener('change', function(e) {
+                        selectedRegion = e.target.value;
+                        console.log(`Region selected: ${selectedRegion}`);
+                    });
+                } else {
+                    showAlert('Failed to load regions. Please refresh the page.', 'warning');
+                }
+            } catch (error) {
+                console.error('Error loading regions:', error);
+                showAlert('Failed to load regions. Please refresh the page.', 'warning');
+            }
+        }
+
+        // Set region in backend
+        async function setRegion(region) {
+            try {
+                const response = await fetch('http://localhost:8000/set_region/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ region: region })
+                });
+                
+                if (!response.ok) {
+                    console.error('Failed to set region');
+                }
+            } catch (error) {
+                console.error('Error setting region:', error);
+            }
+        }
+
+        // Logout functionality
+        function logout() {
+            accessToken = null;
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+            resetAnalysis();
+        }
+
+        // Reset analysis
+        function resetAnalysis() {
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('resultsContent').innerHTML = '';
+            uploadedFilename = null;
+            currentResultId = null;
+        }
+
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Insert at the top of the appropriate container
+            if (document.getElementById('mainSection').style.display === 'block') {
+                const activeSection = document.querySelector('.upload-container:not([style*="display: none"]), .results-container:not([style*="display: none"]), .history-container:not([style*="display: none"])');
+                if (activeSection) {
+                    activeSection.prepend(alertDiv);
+                } else {
+                    document.getElementById('uploadSection').prepend(alertDiv);
+                }
+            } else {
+                document.querySelector('.login-container').prepend(alertDiv);
+            }
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Navigation functions
+        function showNewAnalysis() {
+            resetAnalysis();
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+        }
+
+        function showResults() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('historySection').style.display = 'none';
+        }
+
+        function loadAnalysisHistory() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'block';
+            document.getElementById('singleAnalysisView').classList.add('d-none');
+            
+            // Load analysis history from API
+            fetchAnalysisHistory();
+        }
+
+        // Image preview
+        document.getElementById('imageInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('imagePreviewContainer');
+                    preview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Analyze image
+        async function analyzeImage() {
+            const fileInput = document.getElementById('imageInput');
+            if (!fileInput.files[0]) {
+                showAlert('Please select an image first.', 'warning');
+                return;
+            }
+            
+            if (!selectedRegion) {
+                showAlert('Please select a region first.', 'warning');
+                return;
+            }
+
+            // Set the selected region first
+            await setRegion(selectedRegion);
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                // Show loading spinner
+                document.querySelector('.loading').style.display = 'block';
+                document.getElementById('analyzeBtn').disabled = true;
+
+                // Upload image
+                const uploadResponse = await fetch('http://localhost:8000/upload/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Upload failed');
+                }
+                
+                const uploadData = await uploadResponse.json();
+                uploadedFilename = uploadData.filename;
+
+                // Analyze image
+                const analyzeResponse = await fetch(`http://localhost:8000/analyze/?filename=${uploadedFilename}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!analyzeResponse.ok) {
+                    throw new Error('Analysis failed');
+                }
+
+                const analysisData = await analyzeResponse.json();
+                currentResultId = analysisData.result_id;
+                
+                // Display results
+                displayResults(analysisData);
+                
+                // Switch to results view
+                showResults();
+                
+                // Show success message
+                showAlert('Analysis completed successfully!', 'success');
+
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Analysis failed. Please try again.', 'danger');
+            } finally {
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('analyzeBtn').disabled = false;
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            const resultsContent = document.getElementById('resultsContent');
+            const analysis = data.analysis;
+            
+            let html = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-clipboard-list"></i> Summary
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Total Leaves Analyzed</th>
+                                        <td>${analysis.summary.total_leaves_analyzed}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Fruits Analyzed</th>
+                                        <td>${analysis.summary.total_fruits_analyzed}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Leaf Infection Rate</th>
+                                        <td>${analysis.summary.overall_leaf_infection_rate}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fruit Infection Rate</th>
+                                        <td>${analysis.summary.overall_fruit_infection_rate}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-cloud-sun"></i> Weather Conditions
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Location</th>
+                                        <td>${analysis.weather_conditions.weather_data.city}, ${analysis.weather_conditions.weather_data.country}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Temperature</th>
+                                        <td>${analysis.weather_conditions.weather_data.temperature}°C 
+                                            <span class="badge ${getBadgeClass(analysis.weather_conditions.temperature_status)}">
+                                                ${formatStatus(analysis.weather_conditions.temperature_status)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Humidity</th>
+                                        <td>${analysis.weather_conditions.weather_data.humidity}% 
+                                            <span class="badge ${getBadgeClass(analysis.weather_conditions.humidity_status)}">
+                                                ${formatStatus(analysis.weather_conditions.humidity_status)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-search"></i> Detection Results
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="data:image/jpeg;base64,${data.detection_image}" class="img-fluid rounded" alt="Detection Results">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-chart-pie"></i> Disease Distribution
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="data:image/png;base64,${data.charts_image}" class="img-fluid rounded" alt="Disease Distribution">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-lightbulb"></i> Recommendations
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    ${analysis.recommendations.map(rec => `<li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = html;
+        }
+        
+        // Helper function to format status
+        function formatStatus(status) {
+            return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        // Helper function to get appropriate badge class based on status
+        function getBadgeClass(status) {
+            switch(status) {
+                case 'optimal':
+                    return 'badge-optimal';
+                case 'too_hot':
+                case 'too_humid':
+                    return 'badge-danger';
+                case 'too_cold':
+                case 'too_dry':
+                    return 'badge-warning';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+
+        // Download PDF for current analysis
+        async function downloadPDF() {
+            if (!currentResultId) {
+                showAlert('No results available to download.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/generate_pdf/${currentResultId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('PDF generation failed');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `olive_analysis_report_${currentResultId}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showAlert('PDF report downloaded successfully!', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Failed to download PDF. Please try again.', 'danger');
+            }
+        }
+        
+        // Download PDF for history item
+        async function downloadHistoryPDF() {
+            if (!currentHistoryResult) {
+                showAlert('No history result selected.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/generate_pdf/${currentHistoryResult}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('PDF generation failed');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `olive_analysis_report_${currentHistoryResult}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showAlert('PDF report downloaded successfully!', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Failed to download PDF. Please try again.', 'danger');
+            }
+        }
+        
+        // Fetch analysis history
+        async function fetchAnalysisHistory() {
+            try {
+                const response = await fetch('http://localhost:8000/history', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch analysis history');
+                }
+                
+                const data = await response.json();
+                displayAnalysisHistory(data.results);
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Failed to load analysis history.', 'danger');
+            }
+        }
+        
+        // Display analysis history
+        function displayAnalysisHistory(results) {
+            const tableBody = document.getElementById('historyTableBody');
+            const emptyMessage = document.getElementById('historyEmptyMessage');
+            
+            // Clear previous content
+            tableBody.innerHTML = '';
+            
+            if (results && results.length > 0) {
+                emptyMessage.classList.add('d-none');
+                
+                // Add each result to the table
+                results.forEach(result => {
+                    const row = document.createElement('tr');
+                    row.className = 'history-item';
+                    row.setAttribute('data-result-id', result.id);
+                    
+                    row.innerHTML = `
+                        <td>${result.timestamp}</td>
+                        <td>${result.region_name}</td>
+                        <td>${result.total_leaves}</td>
+                        <td>${result.total_fruits}</td>
+                        <td>${result.leaf_infection_rate}</td>
+                        <td>${result.fruit_infection_rate}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary view-btn" data-result-id="${result.id}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.view-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const resultId = e.currentTarget.getAttribute('data-result-id');
+                        viewHistoryAnalysis(resultId);
+                    });
+                });
+            } else {
+                emptyMessage.classList.remove('d-none');
+            }
+        }
+        
+        // View a specific analysis from history
+        async function viewHistoryAnalysis(resultId) {
+            try {
+                const response = await fetch(`http://localhost:8000/analysis/${resultId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch analysis details');
+                }
+                
+                const data = await response.json();
+                displayHistoryAnalysis(data.analysis);
+                currentHistoryResult = resultId;
+                
+                // Show the detail view
+                document.getElementById('singleAnalysisView').classList.remove('d-none');
+                
+                // Scroll to the detail view
+                document.getElementById('singleAnalysisView').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Failed to load analysis details.', 'danger');
+            }
+        }
+        
+        // Display a specific analysis from history
+        function displayHistoryAnalysis(analysis) {
+            const resultsContent = document.getElementById('historySingleAnalysisContent');
+            
+            let html = `
+                <h4 class="mb-3">Analysis from ${analysis.timestamp}</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-clipboard-list"></i> Summary
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Total Leaves Analyzed</th>
+                                        <td>${analysis.summary.total_leaves_analyzed}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Fruits Analyzed</th>
+                                        <td>${analysis.summary.total_fruits_analyzed}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Leaf Infection Rate</th>
+                                        <td>${analysis.summary.overall_leaf_infection_rate}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fruit Infection Rate</th>
+                                        <td>${analysis.summary.overall_fruit_infection_rate}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-cloud-sun"></i> Weather Conditions
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Location</th>
+                                        <td>${analysis.weather_conditions.weather_data.city}, ${analysis.weather_conditions.weather_data.country}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Temperature</th>
+                                        <td>${analysis.weather_conditions.weather_data.temperature}°C 
+                                            <span class="badge ${getBadgeClass(analysis.weather_conditions.temperature_status)}">
+                                                ${formatStatus(analysis.weather_conditions.temperature_status)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Humidity</th>
+                                        <td>${analysis.weather_conditions.weather_data.humidity}% 
+                                            <span class="badge ${getBadgeClass(analysis.weather_conditions.humidity_status)}">
+                                                ${formatStatus(analysis.weather_conditions.humidity_status)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-search"></i> Detection Results
+                            </div>
+                            <div class="card-body text-center">
+                                ${analysis.detection_image ? 
+                                    `<img src="data:image/jpeg;base64,${analysis.detection_image}" class="img-fluid rounded" alt="Detection Results">` :
+                                    `<p class="text-muted">Detection image not available</p>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-chart-pie"></i> Disease Distribution
+                            </div>
+                            <div class="card-body text-center">
+                                ${analysis.charts_image ?
+                                    `<img src="data:image/png;base64,${analysis.charts_image}" class="img-fluid rounded" alt="Disease Distribution">` :
+                                    `<p class="text-muted">Distribution chart not available</p>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-lightbulb"></i> Recommendations
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    ${analysis.recommendations.map(rec => `<li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = html;
+        }
+        
+        // Hide single analysis view and show history table
+        function hideAnalysisDetail() {
+            document.getElementById('singleAnalysisView').classList.add('d-none');
+            currentHistoryResult = null;
+        }
+
+        // Add Bootstrap JS for dismissible alerts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for close buttons on alerts
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('btn-close')) {
+                    const alert = e.target.closest('.alert');
+                    if (alert) {
+                        alert.remove();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{
+    "summary": {
+        "total_leaves_analyzed": 15,
+        "total_fruits_analyzed": 8,
+        "overall_leaf_infection_rate": "86.7%",
+        "overall_fruit_infection_rate": "100.0%"
+    },
+    "disease_analysis": {
+        "leaves": {
+            "raw_counts": {
+                "Healthy": 2,
+                "aculus_olearius": 13,
+                "olive_peacock_spot": 0
+            },
+            "percentage_distribution": {
+                "Healthy": {
+                    "count": 2,
+                    "percentage": "13.3%"
+                },
+                "aculus_olearius": {
+                    "count": 13,
+                    "percentage": "86.7%"
+                },
+                "olive_peacock_spot": {
+                    "count": 0,
+                    "percentage": "0.0%"
+                }
+            },
+            "total_detected": 15
+        },
+        "fruits": {
+            "raw_counts": {
+                "healthy": 0,
+                "olive_fruit_fly": 2,
+                "olive_anthracnose": 6
+            },
+            "percentage_distribution": {
+                "healthy": {
+                    "count": 0,
+                    "percentage": "0.0%"
+                },
+                "olive_fruit_fly": {
+                    "count": 2,
+                    "percentage": "25.0%"
+                },
+                "olive_anthracnose": {
+                    "count": 6,
+                    "percentage": "75.0%"
+                }
+            },
+            "total_detected": 8
+        }
+    },
+    "weather_conditions": {
+        "weather_data": {
+            "temperature": 27.8,
+            "humidity": 77,
+            "city": "Karachi",
+            "country": "Pakistan",
+            "latitude": 24.8607,
+            "longitude": 67.0011
+        },
+        "temperature_status": "optimal",
+        "humidity_status": "too_humid"
+    },
+    "recommendations": [
+        "Leaf infection rate: 86.7%",
+        "Fruit infection rate: 100.0%",
+        "Temperature conditions are optimal for olive trees.",
+        "Humidity is higher than optimal. Ensure good air circulation around trees and apply Engro's CuGuard (Copper Oxychloride) preventively.",
+        "86.7% of leaves show symptoms of Aculus Olearius (tiny mites). Apply Engro's Abamite (abamectin 1.8% EC) at 0.5ml/L water and remove infected leaves.",
+        "25.0% of fruits are affected by Olive Fruit Fly. Set up pheromone traps and apply Engro's Lambda Super (lambda-cyhalothrin 2.5% EC) at 1ml/L water.",
+        "75.0% of fruits show signs of Anthracnose. Apply Engro's Curzate (cymoxanil + mancozeb) at 2g/L water and remove infected fruits."
+    ],
+    "analysis_timestamp": "2025-04-29 01:56:36",
+    "visualizations": {
+        "detection_image": "detection_result.jpg",
+        "distribution_charts": "disease_distribution.png"
+    }
+}

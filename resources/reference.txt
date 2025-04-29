@@ -1,0 +1,29 @@
+# Simplified References for Olive Farm Management
+
+## Engro Product References
+
+1. **Engro CuGuard (Copper Oxychloride)**
+   - Engro Corporation Limited. (2022). "CuGuard Technical Information Sheet." Engro Crop Protection Division.
+   - Used for: Olive Peacock Spot, preventive treatment, anti-frost protection
+
+2. **Engro Zarkhez**
+   - Engro Fertilizers Limited. (2024). "Zarkhez - Organic Soil Conditioner and Mulch." Product Technical Bulletin.
+   - Used for: Improving soil moisture retention in dry conditions
+
+3. **Engro Abamite**
+   - Engro Crop Protection. (2023). "Abamite Technical Information and Usage Guidelines."
+   - Used for: Controlling Aculus Olearius (Olive Mite)
+
+4. **Engro Lambda Super**
+   - Engro Crop Protection. (2023). "Lambda Super Technical Information and Usage Guidelines."
+   - Used for: Managing Olive Fruit Fly infestations
+
+5. **Engro Curzate**
+   - Engro Crop Protection. (2022). "Curzate Product Information Sheet."
+   - Used for: Controlling Anthracnose in olive fruits
+
+## Management Guidelines
+
+6. **Pakistan Olive Guidelines**
+   - Pakistan Agricultural Research Council. (2023). "Olive Production Manual for Pakistani Farmers."
+   - Barani Agricultural Research Institute, Chakwal. (2024). "Olive Cultivation in Barani Areas."
